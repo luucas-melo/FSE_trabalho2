@@ -10,8 +10,11 @@
 #include "gpio.h"
 #include "pid.h"
 #include "controller.h"
+#include "lcd_display.h"
 
 Controller controller;
+
+int timer = 0;
 
 void set_on_off_state(int state)
 {
@@ -25,8 +28,8 @@ void set_uart_controller(int uart)
 
 void run_control()
 {
-    unsigned char temp_code[9] = {ESP_CODE, SEND_CODE, TEMP_CODE, MATRICULA};
-    unsigned char potenciometro_code[9] = {ESP_CODE, SEND_CODE, POTENCIOMETRO_CODE, MATRICULA};
+    unsigned char temp_code[7] = {ESP_CODE, SEND_CODE, TEMP_CODE, MATRICULA};
+    unsigned char potenciometro_code[7] = {ESP_CODE, SEND_CODE, POTENCIOMETRO_CODE, MATRICULA};
     float potenciometro_value;
     float internal_temp;
     float control_output;
@@ -41,10 +44,12 @@ void run_control()
         usleep(UART_SLEEP_TIME);
         potenciometro_value = read_float(controller.uart);
 
+        printf("POTENC VALUE %f\n", potenciometro_value);
+
         pid_atualiza_referencia(potenciometro_value);
 
         control_output = pid_controle(internal_temp);
-        printf("CONTROL OUTPUT %f\n", control_output);
+
         if (control_output > 0)
         {
             start_resistor((int)control_output);
@@ -62,6 +67,7 @@ void run_control()
             }
             stop_resistor();
         }
+        display_air_fryer_info(potenciometro_value, internal_temp, 2);
 
         sleep(1);
     }

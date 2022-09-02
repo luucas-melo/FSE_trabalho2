@@ -2,8 +2,6 @@ typedef struct Controller
 {
     int state_on_off;
     int uart;
-    float temperature_history[3];
-
 } Controller;
 
 void run_control();

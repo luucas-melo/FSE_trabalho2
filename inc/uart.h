@@ -15,11 +15,14 @@
 #define CODIGO_CMD 0x23
 #define SEND_CODE 0x16
 
-#define UART_SLEEP_TIME 500000
+#define SEND_TIME 0xD6
+
+#define UART_SLEEP_TIME 100000
 
 int init_uart();
 void setup_uart();
 int write_uart(int uart, unsigned char *message, int size);
 float read_float(int uart);
+int read_int(int uart);
 
 #endif

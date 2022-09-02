@@ -18,10 +18,13 @@ int main()
     printf("rodou\n");
     uart0 = init_uart();
     init_gpio();
+    lcd_init();
     stop_fan();
     stop_resistor();
     sleep(8);
     pid_configura_constantes(30.0, 0.2, 400.0);
+
     run_control();
+    close(uart0);
     return 0;
 }

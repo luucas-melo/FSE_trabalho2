@@ -89,3 +89,26 @@ float read_float(int uart)
         return message;
     }
 }
+
+int read_int(int uart)
+{
+    unsigned char rx_buffer[255];
+    int rx_length = read(uart, (void *)rx_buffer, 9);
+    if (rx_length < 0)
+    {
+        printf("Erro: was not possible to read\n");
+        return 0;
+    }
+    else if (rx_length == 0)
+    {
+        printf("Message not available.\n");
+        return 0;
+    }
+    else
+    {
+
+        int message = 0;
+        memcpy(&message, &rx_buffer[3], 4);
+        return message;
+    }
+}
