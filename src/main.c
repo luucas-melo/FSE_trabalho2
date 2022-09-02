@@ -23,7 +23,7 @@ int main()
     stop_resistor();
     sleep(8);
     pid_configura_constantes(30.0, 0.2, 400.0);
-
+    menu();
     run_control();
     close(uart0);
     return 0;
