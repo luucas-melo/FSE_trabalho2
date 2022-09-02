@@ -12,11 +12,16 @@
 
 #define CLIENT_CODE 0x00
 #define ESP_CODE 0x01
-#define CODIGO_CMD 0x23
+#define CMD_CODE 0x23
 #define SEND_CODE 0x16
 
 #define SEND_TIME 0xD6
 
+#define REQUEST_USER_CMD 0xc3
+
+#define SEND_REF_CODE 0xD2
+#define SEND_CONTROL_MODE 0xD4
+#define READ_USER_CMD 0xC3
 #define UART_SLEEP_TIME 100000
 
 int init_uart();

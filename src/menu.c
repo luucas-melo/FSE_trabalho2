@@ -4,10 +4,9 @@
 void menu()
 {
     int mode;
-    printf("Escolha o modo para a temperatura de referencia (TR):\n");
+    printf("Escolha o modo da temperatura de referencia (TR):\n");
     printf("[0] Potenciometro\n");
     printf("[1] Terminal\n");
-    printf("Escolha o modo para a temperatura de referencia: ");
     scanf("%d", &mode);
     if (mode == 0)
     {
