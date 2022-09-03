@@ -12,13 +12,15 @@
 #include "controller.h"
 #include "lcd_display.h"
 #include "../inc/menu.h"
-Controller controller;
+#include "lcd_display.h"
+
+Controller controller = {0, 0, 0, 0, 0.0};
 
 int timer = 0;
 
-void set_on_off_state(int state)
+void set_system_state(int state)
 {
-    controller.state_on_off = state;
+    controller.system_state = state;
 }
 
 void set_uart_controller(int uart)
@@ -36,14 +38,13 @@ void run_control()
     float control_output;
     double tr;
 
-    while (1)
+    while (controller.is_heating)
     {
         write_uart(controller.uart, temp_code, 7);
         usleep(UART_SLEEP_TIME);
         internal_temp = read_float(controller.uart);
-        printf("REF MODE === %d\n", controller.ref_mode);
-        // REF MODE CASES
 
+        // REF MODE CASES
         control_output = pid_controle(internal_temp);
         switch (controller.ref_mode)
         {
@@ -103,4 +104,55 @@ void set_pid_ref(float ref)
 float get_pid_ref()
 {
     return controller.pid_ref;
+}
+
+void send_system_state()
+{
+    unsigned char send_system_state[11] = {ESP_CODE, SEND_CODE, SEND_SYSTEM_STATE, MATRICULA};
+    int system_char = (char)controller.system_state;
+    memcpy(&send_system_state[7], &system_char, 1);
+    write_uart(controller.uart, send_system_state, 8);
+    usleep(UART_SLEEP_TIME);
+
+    int response_code;
+    response_code = read_int(controller.uart);
+    printf("System state: %d\n", response_code);
+}
+
+void handle_user_command(int command)
+{
+    switch (command)
+    {
+    case TURN_ON:
+        controller.system_state = 1; // ligado
+        send_system_state();
+        printf("System turned on\n");
+        break;
+    case TURN_OFF:
+        controller.system_state = 0; // desligado
+        stop_resistor();
+        stop_fan();
+        send_system_state();
+        display_message("Desligado!");
+        printf("System turned off\n");
+        break;
+    default:
+        break;
+    }
+}
+
+void read_user_command()
+{
+    unsigned char user_command[7] = {ESP_CODE, CMD_CODE, READ_USER_CMD, MATRICULA};
+
+    write_uart(controller.uart, user_command, 7);
+    usleep(UART_SLEEP_TIME);
+    int command = 0;
+    command = read_int(controller.uart);
+    if (command > 0 && command < 7)
+    {
+
+        printf("Command: %d\n", command);
+        handle_user_command(command);
+    }
 }

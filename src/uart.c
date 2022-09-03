@@ -60,10 +60,6 @@ int write_uart(int uart0, unsigned char *message, int size)
         printf("Error: Write uart error\n");
         return UART_FAIL;
     }
-    else
-    {
-        printf("✓ Writed with success.\n");
-    }
 
     return 0;
 }

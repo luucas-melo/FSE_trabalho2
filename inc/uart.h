@@ -22,6 +22,16 @@
 #define SEND_REF_CODE 0xD2
 #define SEND_CONTROL_MODE 0xD4
 #define READ_USER_CMD 0xC3
+#define SEND_SYSTEM_STATE 0xD3
+
+#define TURN_ON 0x01
+#define TURN_OFF 0x02
+#define INIT_HEATING 0x03
+#define CANCEL_HEATING 0x04
+#define INCREASE_TIME 0x05
+#define DECREASE_TIME 0x06
+#define MENU 0x07
+
 #define UART_SLEEP_TIME 100000
 
 int init_uart();
