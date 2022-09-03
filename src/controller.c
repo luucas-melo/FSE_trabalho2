@@ -28,11 +28,20 @@ void set_uart_controller(int uart)
     controller.uart = uart;
 }
 
+void signal_control(int control_output)
+{
+    unsigned char control_signal[11] = {ESP_CODE, SEND_CODE, SEND_CONTROL_SIGNAL, MATRICULA};
+    int co_int = (int)control_output;
+    memcpy(&control_signal[7], &co_int, 4);
+    write_uart(controller.uart, control_signal, 11);
+}
+
 void run_control()
 {
     unsigned char temp_code[7] = {ESP_CODE, SEND_CODE, TEMP_CODE, MATRICULA};
     unsigned char potenciometro_code[7] = {ESP_CODE, SEND_CODE, POTENCIOMETRO_CODE, MATRICULA};
     unsigned char temp_ref[11] = {ESP_CODE, SEND_CODE, SEND_REF_CODE, MATRICULA};
+
     float potenciometro_value;
     float internal_temp;
     float control_output;
@@ -86,6 +95,7 @@ void run_control()
             }
             stop_resistor();
         }
+        signal_control(control_output);
     }
 }
 

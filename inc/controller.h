@@ -21,3 +21,4 @@ float get_pid_ref();
 
 void read_user_command();
 void handle_user_command(int command);
+void signal_control(int control_output);

@@ -22,6 +22,8 @@
 #define SEND_REF_CODE 0xD2
 #define SEND_CONTROL_MODE 0xD4
 #define READ_USER_CMD 0xC3
+
+#define SEND_CONTROL_SIGNAL 0xD1
 #define SEND_SYSTEM_STATE 0xD3
 
 #define TURN_ON 0x01
