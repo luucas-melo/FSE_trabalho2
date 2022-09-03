@@ -1,3 +1,5 @@
+#define PWM_LIMIT 40.0
+
 typedef struct Controller
 {
     int system_state;
@@ -22,3 +24,7 @@ float get_pid_ref();
 void read_user_command();
 void handle_user_command(int command);
 void signal_control(int control_output);
+
+void send_system_state(int system_state);
+
+void send_system_running_state(int heating_state);

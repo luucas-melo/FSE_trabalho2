@@ -38,7 +38,7 @@ int main()
     init_timer(uart0);
     init_sensor();
     pid_configura_constantes(30.0, 0.2, 400.0);
-    set_system_state(1);
+    set_system_state(0);
     menu();
     signal(SIGINT, handle_sigint);
     while (1)

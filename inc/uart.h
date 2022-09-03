@@ -8,24 +8,22 @@
 
 #define TEMP_CODE 0xC1
 #define POTENCIOMETRO_CODE 0xC2
-#define READ_USER_REF_CODE 0xC3
+#define READ_USER_CMD 0xC3
 
-#define CLIENT_CODE 0x00
+#define RETURN_CODE 0x00
 #define ESP_CODE 0x01
 #define CMD_CODE 0x23
 #define SEND_CODE 0x16
 
+// SEND DATA
+#define SEND_CONTROL_SIGNAL 0xD1
+#define SEND_REF_CODE 0xD2
+#define SEND_SYSTEM_STATE 0xD3
+#define SEND_CONTROL_MODE 0xD4
+#define SEND_RUNNING_STATE 0xD5
 #define SEND_TIME 0xD6
 
-#define REQUEST_USER_CMD 0xc3
-
-#define SEND_REF_CODE 0xD2
-#define SEND_CONTROL_MODE 0xD4
-#define READ_USER_CMD 0xC3
-
-#define SEND_CONTROL_SIGNAL 0xD1
-#define SEND_SYSTEM_STATE 0xD3
-
+// UART MENU RESPONSES
 #define TURN_ON 0x01
 #define TURN_OFF 0x02
 #define INIT_HEATING 0x03
@@ -34,12 +32,8 @@
 #define DECREASE_TIME 0x06
 #define MENU 0x07
 
-#define UART_SLEEP_TIME 100000
-
 int init_uart();
 void setup_uart();
 int write_uart(int uart, unsigned char *message, int size);
-float read_float(int uart);
-int read_int(int uart);
 
 #endif

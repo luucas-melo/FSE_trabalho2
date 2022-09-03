@@ -60,51 +60,10 @@ int write_uart(int uart0, unsigned char *message, int size)
         printf("Error: Write uart error\n");
         return UART_FAIL;
     }
+    else
+    {
+        printf("ESCREVEU COM SUCESSO\n");
+    }
 
     return 0;
-}
-float read_float(int uart)
-{
-    unsigned char rx_buffer[255];
-    int rx_length = read(uart, (void *)rx_buffer, 9);
-    if (rx_length < 0)
-    {
-        printf("Erro: was not possible to read\n");
-        return 0;
-    }
-    else if (rx_length == 0)
-    {
-        printf("Message not available\n");
-        return 0;
-    }
-    else
-    {
-        printf("Message was read with success\n");
-        float message = 0;
-        memcpy(&message, &rx_buffer[3], 4);
-        return message;
-    }
-}
-
-int read_int(int uart)
-{
-    unsigned char rx_buffer[255];
-    int rx_length = read(uart, (void *)rx_buffer, 9);
-    if (rx_length < 0)
-    {
-        printf("Erro: was not possible to read\n");
-        return 0;
-    }
-    else if (rx_length == 0)
-    {
-        printf("Message not available.\n");
-        return 0;
-    }
-    else
-    {
-
-        int message = 0;
-        memcpy(&message, &rx_buffer[3], 4);
-        return message;
-    }
 }

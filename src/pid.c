@@ -29,14 +29,14 @@ double pid_controle(double saida_medida)
 
     double erro = referencia - saida_medida;
 
-    // printf("Temp: \t Temp Ref: \t Erro \t Erro Total: \n");
+    printf("Temp: \t Temp Ref: \t Erro \t Erro Total: \n");
     erro_total += erro; // Acumula o erro (Termo Integral)
 
-    // printf("%.2f\t", saida_medida);
-    // printf("%.2f\t", referencia);
-    // printf("%.2f\t", erro);
-    // printf("%.2f\t", erro_total);
-    // printf("\n");
+    printf("%.2f\t", saida_medida);
+    printf("%.2f\t", referencia);
+    printf("%.2f\t", erro);
+    printf("%.2f\t", erro_total);
+    printf("\n");
 
     if (erro_total >= sinal_de_controle_MAX)
     {
