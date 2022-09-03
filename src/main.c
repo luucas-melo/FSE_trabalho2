@@ -11,7 +11,20 @@
 #include <sys/signal.h>
 #include <controller.h>
 #include <gpio.h>
+#include "timer.h"
+#include "bme280_driver.h"
+
 int uart0 = -1;
+
+void handle_sigint()
+{
+    set_system_state(0);
+    lcd_init();
+    ClrLcd();
+    gpio_stop_all();
+    close_uart(uart0);
+    exit(0);
+}
 
 int main()
 {
@@ -21,9 +34,13 @@ int main()
     lcd_init();
     stop_fan();
     stop_resistor();
-    sleep(8);
+    sleep(3);
+    init_timer(uart0);
+    init_sensor();
     pid_configura_constantes(30.0, 0.2, 400.0);
+    set_system_state(1);
     menu();
+    signal(SIGINT, handle_sigint);
     while (1)
     {
 
@@ -31,6 +48,6 @@ int main()
         read_user_command();
         sleep(1);
     }
-    close(uart0);
+    close_uart(uart0);
     return 0;
 }
