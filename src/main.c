@@ -24,7 +24,13 @@ int main()
     sleep(8);
     pid_configura_constantes(30.0, 0.2, 400.0);
     menu();
-    run_control();
+    while (1)
+    {
+
+        run_control();
+        read_user_command();
+        sleep(1);
+    }
     close(uart0);
     return 0;
 }

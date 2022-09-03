@@ -38,7 +38,7 @@ void run_control()
     float control_output;
     double tr;
 
-    while (controller.is_heating)
+    if (controller.is_heating)
     {
         write_uart(controller.uart, temp_code, 7);
         usleep(UART_SLEEP_TIME);
@@ -86,8 +86,6 @@ void run_control()
             }
             stop_resistor();
         }
-        read_user_command();
-        sleep(1);
     }
 }
 
@@ -135,6 +133,16 @@ void handle_user_command(int command)
         send_system_state();
         display_message("Desligado!");
         printf("System turned off\n");
+        break;
+    case INIT_HEATING:
+        controller.is_heating = 1;
+        display_message("Aquecendo...");
+        printf("Start heating \n");
+        break;
+    case CANCEL_HEATING:
+        controller.is_heating = 0;
+        display_message("Parado");
+        printf("Stopping heating\n");
         break;
     default:
         break;
