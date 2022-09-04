@@ -86,6 +86,7 @@ void run_control()
             {
                 set_time_is_decreasing(0);
                 send_system_running_state(0);
+                display_message("esfriando...");
             }
 
             break;
@@ -97,6 +98,23 @@ void run_control()
             write_uart(controller.uart, temp_ref, 11);
             display_air_fryer_info(tr, internal_temp, time.sec);
 
+            if (internal_temp >= tr)
+            {
+
+                set_time_is_decreasing(1);
+            }
+            if (time.is_decreasing == 1)
+            {
+
+                decrease_1sec_timer();
+            }
+
+            if (time.sec <= 0 && time.is_decreasing)
+            {
+                set_time_is_decreasing(0);
+                send_system_running_state(0);
+                display_message("esfriando...");
+            }
             break;
         default:
             break;

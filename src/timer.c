@@ -46,13 +46,8 @@ void decrease_1sec_timer()
 {
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
     timer.sec--;
-    if (timer.sec < 0 && timer.min > 0)
-    {
-        timer.min--;
-        timer.sec = 59;
-    }
-    else if (
-        timer.sec < 0)
+    timer.min = timer.sec / 60;
+    if (timer.sec < 0)
     {
         timer.sec = 0;
     }
