@@ -9,13 +9,13 @@ void display_air_fryer_info(float tr, float ti, int timer)
 {
     ClrLcd();
     lcdLoc(LINE1);
-    typeln("TR:");
+    typeln("TI:");
+    typeFloat(ti);
+    typeln(" TR:");
     typeFloat(tr);
 
     lcdLoc(LINE2);
-    typeln("TI:");
-    typeFloat(ti);
-
-    typeln(" TEMPO:");
+    typeln("TEMPO:");
     typeInt(timer);
+    typeln("s");
 }

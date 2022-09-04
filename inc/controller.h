@@ -5,8 +5,8 @@ typedef struct Controller
     int system_state;
     int uart;
     int ref_mode;
-    float pid_ref;
     int is_heating;
+    float pid_ref;
 } Controller;
 
 void run_control();

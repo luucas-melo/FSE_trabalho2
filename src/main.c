@@ -21,6 +21,8 @@ void handle_sigint()
     set_system_state(0);
     lcd_init();
     ClrLcd();
+    stop_fan();
+    stop_resistor();
     gpio_stop_all();
     close_uart(uart0);
     exit(0);
@@ -28,7 +30,6 @@ void handle_sigint()
 
 int main()
 {
-    printf("rodou\n");
     uart0 = init_uart();
     init_gpio();
     lcd_init();
@@ -37,8 +38,8 @@ int main()
     sleep(3);
     init_timer(uart0);
     init_sensor();
-    pid_configura_constantes(30.0, 0.2, 400.0);
     set_system_state(0);
+    pid_configura_constantes(30.0, 0.2, 400.0);
     menu();
     signal(SIGINT, handle_sigint);
     while (1)

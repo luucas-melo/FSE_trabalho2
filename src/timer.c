@@ -3,11 +3,12 @@
 #include "timer.h"
 #include "stdio.h"
 
-Timer timer;
+Timer timer = {0, 0, 0, 0};
 
 void init_timer(int uart)
 {
-    timer.time = 0;
+    timer.min = 0;
+    timer.sec = 0;
     timer.uart = uart;
 }
 
@@ -15,42 +16,71 @@ void increase_timer()
 {
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
 
-    printf("TIMER INCREASE: %d\n", timer.time);
-    timer.time++;
-    if (timer.time == 60)
+    printf("TIMER INCREASE: %d %d\n", timer.min, timer.sec);
+    timer.sec += 60;
+    int sec = timer.sec;
+    if (sec >= 60)
     {
-        timer.time = 0;
+        timer.min += 1;
+        sec = 0;
     }
-    memcpy(&timer_value[7], &timer.time, 4);
+    memcpy(&timer_value[7], &timer.min, 4);
     write_uart(timer.uart, timer_value, 11);
 }
 
-void decrease_timer()
+void decrease_1min_timer()
 {
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
-
-    printf("TIMER DECREASE: %d\n", timer.time);
-    timer.time--;
-    if (timer.time < 0)
+    printf("TIMER DECREASE: %d %d\n", timer.min, timer.sec);
+    timer.sec -= 60;
+    timer.min = timer.sec / 60;
+    int sec = timer.sec;
+    if (sec < 0)
     {
-        timer.time = 0;
+        timer.min = 0;
+        timer.sec = 0;
     }
-    memcpy(&timer_value[7], &timer.time, 4);
+    memcpy(&timer_value[7], &timer.min, 4);
+    write_uart(timer.uart, timer_value, 11);
+}
+
+void decrease_1sec_timer()
+{
+    unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
+    int sec = timer.sec;
+    printf("TIMER DECREASE SEC: %d %d\n", timer.min, timer.sec);
+    timer.sec--;
+    if (timer.sec < 0 && timer.min > 0)
+    {
+        timer.min--;
+        timer.sec = 59;
+    }
+    else if (
+        timer.sec < 0)
+    {
+        timer.sec = 0;
+    }
+    memcpy(&timer_value[7], &timer.min, 4);
     write_uart(timer.uart, timer_value, 11);
 }
 
 void set_time(int newTime)
 {
-    timer.time = newTime;
+    timer.min = newTime;
 
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
 
-    printf("TIMER: %d\n", timer.time);
-    memcpy(&timer_value[7], &newTime, 4);
+    printf("TIMER: %d\n", timer.min);
+    memcpy(&timer_value[7], &timer.min, 4);
     write_uart(timer.uart, timer_value, 11);
 }
 
-int get_time()
+void set_time_is_decreasing(int is_decreasing)
 {
-    return timer.time;
+    timer.is_decreasing = is_decreasing;
+}
+
+Timer get_time()
+{
+    return timer;
 }

@@ -45,9 +45,8 @@ void run_control()
     float internal_temp;
     float control_output;
     float tr;
-    int time;
-    printf("HEATING %d\n", controller.is_heating);
-    if (!controller.system_state)
+    Timer time = {0, 0, 0, 0};
+    if (controller.system_state == 0)
     {
         printf("SISTEMA DESLIGADO\n");
     }
@@ -69,9 +68,24 @@ void run_control()
             read_message(controller.uart, potenciometro_code, &potenciometro_value, 4);
 
             pid_atualiza_referencia(potenciometro_value);
-            display_air_fryer_info(potenciometro_value, internal_temp, time);
-            if (internal_temp == potenciometro_value)
-                controller.is_heating = 0;
+            display_air_fryer_info(potenciometro_value, internal_temp, time.sec);
+
+            if (internal_temp >= potenciometro_value)
+            {
+
+                set_time_is_decreasing(1);
+            }
+            if (time.is_decreasing == 1)
+            {
+
+                decrease_1sec_timer();
+            }
+
+            if (time.sec <= 0)
+            {
+                set_time_is_decreasing(0);
+                send_system_running_state(0);
+            }
 
             break;
         case TERMINAL_MODE:
@@ -81,12 +95,10 @@ void run_control()
             printf("TIME === %d\n", time);
             memcpy(&temp_ref[7], &tr, 4);
             write_uart(controller.uart, temp_ref, 11);
-            display_air_fryer_info(tr, internal_temp, time);
-            // if (internal_temp >= tr get_time() > 0)
-            // {
+            display_air_fryer_info(tr, internal_temp, time.sec);
 
-            //     decrease_timer();
-            // }
+            break;
+        default:
             break;
         }
 
@@ -180,7 +192,7 @@ void handle_user_command(int command)
         printf("Increasing time\n");
         break;
     case DECREASE_TIME:
-        decrease_timer();
+        decrease_1min_timer();
         printf("Decreasing time\n");
         break;
     default:

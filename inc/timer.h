@@ -4,14 +4,18 @@ typedef struct Timer
 {
 
     int uart;
-    int time;
+    int min;
+    int sec;
+    int is_decreasing;
 
 } Timer;
 
 void init_timer(int uart);
 
 void increase_timer();
-void decrease_timer();
+void decrease_1min_timer();
+void decrease_1sec_timer();
 
 void set_time(int newTime);
-int get_time();
+Timer get_time();
+void set_time_is_decreasing(int is_decreasing);
