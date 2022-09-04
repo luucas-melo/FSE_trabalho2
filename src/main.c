@@ -13,6 +13,9 @@
 #include <gpio.h>
 #include "timer.h"
 #include "bme280_driver.h"
+#include "i2c_lcd.h"
+#include "modbus.h"
+#include "menu.h"
 
 int uart0 = -1;
 

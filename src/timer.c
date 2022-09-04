@@ -16,7 +16,6 @@ void increase_timer()
 {
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
 
-    printf("TIMER INCREASE: %d %d\n", timer.min, timer.sec);
     timer.sec += 60;
     int sec = timer.sec;
     if (sec >= 60)
@@ -31,7 +30,6 @@ void increase_timer()
 void decrease_1min_timer()
 {
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
-    printf("TIMER DECREASE: %d %d\n", timer.min, timer.sec);
     timer.sec -= 60;
     timer.min = timer.sec / 60;
     int sec = timer.sec;
@@ -47,8 +45,6 @@ void decrease_1min_timer()
 void decrease_1sec_timer()
 {
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
-    int sec = timer.sec;
-    printf("TIMER DECREASE SEC: %d %d\n", timer.min, timer.sec);
     timer.sec--;
     if (timer.sec < 0 && timer.min > 0)
     {
@@ -70,7 +66,6 @@ void set_time(int newTime)
 
     unsigned char timer_value[11] = {ESP_CODE, SEND_CODE, SEND_TIME, MATRICULA};
 
-    printf("TIMER: %d\n", timer.min);
     memcpy(&timer_value[7], &timer.min, 4);
     write_uart(timer.uart, timer_value, 11);
 }

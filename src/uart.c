@@ -25,7 +25,6 @@ void setup_uart(int uart0)
 int init_uart()
 {
     int uart = -1;
-    printf("Setting up uart... ");
 
     uart = open(FILE_DESCRIPTOR, O_RDWR | O_NOCTTY | O_NDELAY);
     if (uart == UART_FAIL)
@@ -59,10 +58,6 @@ int write_uart(int uart0, unsigned char *message, int size)
     {
         printf("Error: Write uart error\n");
         return UART_FAIL;
-    }
-    else
-    {
-        printf("ESCREVEU COM SUCESSO\n");
     }
 
     return 0;

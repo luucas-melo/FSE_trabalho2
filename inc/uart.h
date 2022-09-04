@@ -33,6 +33,7 @@
 #define MENU 0x07
 
 int init_uart();
+void close_uart(int uart0);
 void setup_uart();
 int write_uart(int uart, unsigned char *message, int size);
 

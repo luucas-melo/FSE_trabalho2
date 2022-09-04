@@ -1,6 +1,10 @@
 #include <string.h>
 #include "modbus.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
 #include "uart.h"
+#include "crc16.h"
 
 int read_modbus(int uart, void *buffer, int size)
 {
